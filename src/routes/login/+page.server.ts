@@ -1,0 +1,67 @@
+import { LuciaError } from 'lucia';
+import { fail, redirect } from '@sveltejs/kit';
+
+import type { PageServerLoad, Actions } from './$types';
+import { isValidEmail } from '$lib/server/email';
+import { users } from '$lib/schema';
+import { eq } from 'drizzle-orm';
+
+export const load: PageServerLoad = async ({ locals }) => {
+	const session = await locals.auth.validate();
+	if (session) throw redirect(302, '/');
+	return {};
+};
+
+export const actions: Actions = {
+	default: async ({ request, locals }) => {
+		const formData = await request.formData();
+		const username = formData.get('username');
+		const password = formData.get('password');
+		// basic check
+		if (typeof username !== 'string' || username.length < 1 || username.length > 31) {
+			return fail(400, {
+				message: 'Invalid username'
+			});
+		}
+		if (typeof password !== 'string' || password.length < 1 || password.length > 255) {
+			return fail(400, {
+				message: 'Invalid password'
+			});
+		}
+		try {
+			let provider_user=username.toLowerCase();
+			if(!isValidEmail(username)){
+				const storedUser = await locals.DB.select({
+					email: users.email
+				}).from(users).where(eq(users.username, username)).get();
+				if (!storedUser) {
+					return fail(400, {
+						message: 'User does not exist'
+					});
+				}
+				provider_user=storedUser.email;
+			}
+			const key = await locals.lucia.useKey('email', provider_user, password);
+			const session = await locals.lucia.createSession({
+				userId: key.userId,
+				attributes: {}
+			});
+			locals.auth.setSession(session); // set session cookie
+		} catch (e) {
+			if (
+				e instanceof LuciaError &&
+				(e.message === 'AUTH_INVALID_KEY_ID' || e.message === 'AUTH_INVALID_PASSWORD')
+			) {
+				// user does not exist
+				// or invalid password
+				return fail(400, {
+					message: 'Incorrect username or password'
+				});
+			}
+			return fail(500, {
+				message: 'An unknown error occurred'
+			});
+		}
+		throw redirect(302, '/');
+	}
+};
