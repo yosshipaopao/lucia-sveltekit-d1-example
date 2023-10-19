@@ -12,12 +12,8 @@ export const session = sqliteTable('user_session', {
 	userId: text('user_id')
 		.notNull()
 		.references(() => users.id, { onDelete: 'cascade', onUpdate: 'cascade' }),
-	activeExpires: blob('active_expires', {
-		mode: 'bigint'
-	}).notNull(),
-	idleExpires: blob('idle_expires', {
-		mode: 'bigint'
-	}).notNull()
+	activeExpires: integer('active_expires').notNull(),
+	idleExpires: integer('idle_expires').notNull()
 });
 
 export const key = sqliteTable('user_key', {
