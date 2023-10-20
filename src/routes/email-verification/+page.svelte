@@ -8,7 +8,7 @@
 
 	export let form: ActionData;
 
-	$: if (browser&&form) reset?.();
+	$: if (browser && form) reset?.();
 
 	let reset: () => void | undefined;
 </script>
@@ -17,7 +17,7 @@
 <p>Your email verification link was sent to your inbox (i.e. console).</p>
 <h2>Resend verification link</h2>
 <form method="post" use:enhance>
-	<Turnstile siteKey={PUBLIC_TURNSTILE_SITE_KEY} bind:reset/>
+	<Turnstile siteKey={PUBLIC_TURNSTILE_SITE_KEY} bind:reset />
 	<input type="submit" value="Resend" />
 </form>
 {#if form?.success}

@@ -20,13 +20,15 @@ export const actions: Actions = {
 
 		// check turnstile
 		const token = formData.get('cf-turnstile-response');
-		if (typeof token !== 'string') return fail(400, {
-			message: 'Invalid turnstile token'
-		});
+		if (typeof token !== 'string')
+			return fail(400, {
+				message: 'Invalid turnstile token'
+			});
 		const { success, error } = await validateToken(token);
-		if (!success) return fail(400, {
-			message: error || 'Invalid turnstile token'
-		});
+		if (!success)
+			return fail(400, {
+				message: error || 'Invalid turnstile token'
+			});
 
 		try {
 			const storedUser = await locals.DB.select().from(users).where(eq(users.email, email)).get();

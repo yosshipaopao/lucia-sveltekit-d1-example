@@ -6,8 +6,7 @@ import { isValidEmail } from '$lib/server/email';
 import { users } from '$lib/schema';
 import { eq } from 'drizzle-orm';
 
-
-import {validateToken} from '$lib/server/turnstile';
+import { validateToken } from '$lib/server/turnstile';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth.validate();
@@ -33,25 +32,30 @@ export const actions: Actions = {
 		}
 		// check turnstile
 		const token = formData.get('cf-turnstile-response');
-		if (typeof token !== 'string') return fail(400, {
-			message: 'Invalid turnstile token'
-		});
+		if (typeof token !== 'string')
+			return fail(400, {
+				message: 'Invalid turnstile token'
+			});
 		const { success, error } = await validateToken(token);
-		if (!success) return fail(400, {
-			message: error || 'Invalid turnstile token'
-		});
+		if (!success)
+			return fail(400, {
+				message: error || 'Invalid turnstile token'
+			});
 		try {
-			let provider_user=username.toLowerCase();
-			if(!isValidEmail(username)){
+			let provider_user = username.toLowerCase();
+			if (!isValidEmail(username)) {
 				const storedUser = await locals.DB.select({
 					email: users.email
-				}).from(users).where(eq(users.username, username)).get();
+				})
+					.from(users)
+					.where(eq(users.username, username))
+					.get();
 				if (!storedUser) {
 					return fail(400, {
 						message: 'User does not exist'
 					});
 				}
-				provider_user=storedUser.email;
+				provider_user = storedUser.email;
 			}
 			const key = await locals.lucia.useKey('email', provider_user, password);
 			const session = await locals.lucia.createSession({

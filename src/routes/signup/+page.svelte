@@ -8,7 +8,7 @@
 
 	export let form: ActionData;
 
-	$: if (browser&&form) reset?.();
+	$: if (browser && form) reset?.();
 
 	let reset: () => void | undefined;
 </script>
@@ -21,7 +21,7 @@
 	<input name="email" id="email" /><br />
 	<label for="password">Password</label>
 	<input type="password" name="password" id="password" /><br />
-	<Turnstile siteKey={PUBLIC_TURNSTILE_SITE_KEY} bind:reset/>
+	<Turnstile siteKey={PUBLIC_TURNSTILE_SITE_KEY} bind:reset />
 	<input type="submit" />
 </form>
 {#if form?.message}
