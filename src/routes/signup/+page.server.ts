@@ -65,7 +65,6 @@ export const actions: Actions = {
 			const token = await generateEmailVerificationToken(user.userId, locals.DB);
 			await sendEmailVerificationLink(email, token);
 		} catch (e: any) {
-			console.log(e.message);
 			console.error(e);
 			return fail(500, {
 				message: e.message ?? 'An unknown error occurred'

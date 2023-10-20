@@ -2,13 +2,11 @@ import { HOST, DKIMPrivateKey, SENDER_EMAIL, DKIM_DOMAIN } from '$env/static/pri
 
 export const sendEmailVerificationLink = async (email: string, token: string) => {
 	const url = `${HOST}/email-verification/${token}`;
-	console.log(`${email} : ${url}`);
 	return await sendEmail(email, 'Verify your email', `Click the link below to verify your email:\n${url}`);
 };
 
 export const sendPasswordResetLink = async (email: string, token: string) => {
 	const url = `${HOST}/password-reset/${token}`;
-	console.log(`${email}: ${url}`);
 	return await sendEmail(
 		email,
 		'Reset your password',
