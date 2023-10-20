@@ -21,7 +21,8 @@
 		"cfw-bindings-wrangler-bridge": "^0.8.1",
 		"drizzle-kit": "^0.19.13",
 		"drizzle-orm": "^0.28.6",
-		"lucia": "latest"
+		"lucia": "latest",
+		"svelte-turnstile": "^0.5.0"
 	},
 	"devDependencies": {
 		"@sveltejs/adapter-cloudflare": "^2.3.3",

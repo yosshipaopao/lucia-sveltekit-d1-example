@@ -6,6 +6,9 @@ import { isValidEmail } from '$lib/server/email';
 import { users } from '$lib/schema';
 import { eq } from 'drizzle-orm';
 
+
+import {validateToken} from '$lib/server/turnstile';
+
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth.validate();
 	if (session) throw redirect(302, '/');
@@ -28,6 +31,15 @@ export const actions: Actions = {
 				message: 'Invalid password'
 			});
 		}
+		// check turnstile
+		const token = formData.get('cf-turnstile-response');
+		if (typeof token !== 'string') return fail(400, {
+			message: 'Invalid turnstile token'
+		});
+		const { success, error } = await validateToken(token);
+		if (!success) return fail(400, {
+			message: error || 'Invalid turnstile token'
+		});
 		try {
 			let provider_user=username.toLowerCase();
 			if(!isValidEmail(username)){

@@ -5,6 +5,7 @@ import { isValidEmail, sendPasswordResetLink } from '$lib/server/email';
 import type { Actions } from './$types';
 import { users } from '$lib/schema';
 import { eq } from 'drizzle-orm';
+import { validateToken } from '$lib/server/turnstile';
 
 export const actions: Actions = {
 	default: async ({ request, locals }) => {
@@ -16,6 +17,17 @@ export const actions: Actions = {
 				message: 'Invalid email'
 			});
 		}
+
+		// check turnstile
+		const token = formData.get('cf-turnstile-response');
+		if (typeof token !== 'string') return fail(400, {
+			message: 'Invalid turnstile token'
+		});
+		const { success, error } = await validateToken(token);
+		if (!success) return fail(400, {
+			message: error || 'Invalid turnstile token'
+		});
+
 		try {
 			const storedUser = await locals.DB.select().from(users).where(eq(users.email, email)).get();
 			if (!storedUser) {

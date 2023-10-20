@@ -3,6 +3,7 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import { isValidEmail, sendEmailVerificationLink } from '$lib/server/email';
 import { generateEmailVerificationToken } from '$lib/server/token';
+import { validateToken } from '$lib/server/turnstile';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth.validate();
@@ -32,6 +33,17 @@ export const actions: Actions = {
 				message: 'Invalid email'
 			});
 		}
+
+		// check turnstile
+		const token = formData.get('cf-turnstile-response');
+		if (typeof token !== 'string') return fail(400, {
+			message: 'Invalid turnstile token'
+		});
+		const { success, error } = await validateToken(token);
+		if (!success) return fail(400, {
+			message: error || 'Invalid turnstile token'
+		});
+
 		try {
 			const user = await locals.lucia.createUser({
 				key: {
