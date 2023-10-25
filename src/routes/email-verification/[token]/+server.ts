@@ -19,7 +19,7 @@ export const GET: RequestHandler = async ({ params, locals }) => {
 		return new Response(null, {
 			status: 302,
 			headers: {
-				Location: '/'
+				Location: '/setting/userId'
 			}
 		});
 	} catch (e) {

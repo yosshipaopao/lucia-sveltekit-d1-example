@@ -14,15 +14,9 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions: Actions = {
 	default: async ({ request, locals }) => {
 		const formData = await request.formData();
-		const username = formData.get('username');
 		const email = formData.get('email');
 		const password = formData.get('password');
 		// basic check
-		if (typeof username !== 'string' || username.length < 4 || username.length > 31) {
-			return fail(400, {
-				message: 'Invalid username'
-			});
-		}
 		if (typeof password !== 'string' || password.length < 6 || password.length > 255) {
 			return fail(400, {
 				message: 'Invalid password'
@@ -45,20 +39,20 @@ export const actions: Actions = {
 			return fail(400, {
 				message: error || 'Invalid turnstile token'
 			});
-
 		try {
 			const user = await locals.lucia.createUser({
 				key: {
 					providerId: 'email', // auth method
-					providerUserId: email.toLowerCase(), // unique id when using "username" auth method
+					providerUserId: email.toLowerCase(),
 					password // hashed by Lucia
 				},
 				attributes: {
-					username,
+					username: `user-${Math.floor(Math.random() * 1000000)}`,
 					email,
 					emailVerified: Number(false)
 				}
 			});
+			console.log(email.toLowerCase(),user.userId);
 			const session = await locals.lucia.createSession({
 				userId: user.userId,
 				attributes: {}

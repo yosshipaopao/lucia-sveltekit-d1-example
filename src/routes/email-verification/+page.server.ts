@@ -4,6 +4,7 @@ import { sendEmailVerificationLink } from '$lib/server/email';
 
 import type { PageServerLoad, Actions } from './$types';
 import { validateToken } from '$lib/server/turnstile';
+import { HOST } from '$env/static/private';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth.validate();
@@ -36,10 +37,12 @@ export const actions: Actions = {
 		try {
 			const token = await generateEmailVerificationToken(session.user.userId, locals.DB);
 			const { success, errors } = await sendEmailVerificationLink(session.user.email, token);
-			if (!success)
+			if (!success) {
+				console.log(session.user.email, `${HOST}/email-verification/${token}`)
 				return fail(500, {
 					message: errors
 				});
+			}
 			return {
 				success: true
 			};

@@ -17,10 +17,10 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions: Actions = {
 	default: async ({ request, locals }) => {
 		const formData = await request.formData();
-		const username = formData.get('username');
+		const userId = formData.get('userId');
 		const password = formData.get('password');
 		// basic check
-		if (typeof username !== 'string' || username.length < 1 || username.length > 31) {
+		if (typeof userId !== 'string' || userId.length < 1 || userId.length > 31) {
 			return fail(400, {
 				message: 'Invalid username'
 			});
@@ -42,13 +42,13 @@ export const actions: Actions = {
 				message: error || 'Invalid turnstile token'
 			});
 		try {
-			let provider_user = username.toLowerCase();
-			if (!isValidEmail(username)) {
+			let provider_user = userId.toLowerCase();
+			if (!isValidEmail(userId)) {
 				const storedUser = await locals.DB.select({
 					email: users.email
 				})
 					.from(users)
-					.where(eq(users.username, username))
+					.where(eq(users.id, userId))
 					.get();
 				if (!storedUser) {
 					return fail(400, {

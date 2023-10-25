@@ -14,8 +14,8 @@
 
 <h1>Sign in</h1>
 <form method="post" use:enhance>
-	<label for="username">Username</label>
-	<input name="username" id="username" /><br />
+	<label for="userId">userId or email</label>
+	<input name="userId" id="userId" /><br />
 	<label for="password">Password</label>
 	<input type="password" name="password" id="password" /><br />
 	<Turnstile siteKey={PUBLIC_TURNSTILE_SITE_KEY} bind:reset />
