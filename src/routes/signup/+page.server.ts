@@ -16,6 +16,7 @@ export const actions: Actions = {
 		const formData = await request.formData();
 		const email = formData.get('email');
 		const password = formData.get('password');
+		const token = formData.get('cf-turnstile-response');
 		// basic check
 		if (typeof password !== 'string' || password.length < 6 || password.length > 255) {
 			return fail(400, {
@@ -27,9 +28,7 @@ export const actions: Actions = {
 				message: 'Invalid email'
 			});
 		}
-
 		// check turnstile
-		const token = formData.get('cf-turnstile-response');
 		if (typeof token !== 'string')
 			return fail(400, {
 				message: 'Invalid turnstile token'
@@ -44,12 +43,12 @@ export const actions: Actions = {
 				key: {
 					providerId: 'email', // auth method
 					providerUserId: email.toLowerCase(),
-					password // hashed by Lucia
+					password // will be hashed by Lucia
 				},
 				attributes: {
 					username: `user-${Math.floor(Math.random() * 1000000)}`,
 					email,
-					emailVerified: Number(false)
+					emailVerified: 0
 				}
 			});
 			const token = await generateEmailVerificationToken(user.userId, locals.DB);
