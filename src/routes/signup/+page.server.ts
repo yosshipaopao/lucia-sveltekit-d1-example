@@ -52,11 +52,6 @@ export const actions: Actions = {
 					emailVerified: Number(false)
 				}
 			});
-			const session = await locals.lucia.createSession({
-				userId: user.userId,
-				attributes: {}
-			});
-			locals.auth.setSession(session); // set session cookie
 			const token = await generateEmailVerificationToken(user.userId, locals.DB);
 			await sendEmailVerificationLink(email, token);
 		} catch (e: any) {
