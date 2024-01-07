@@ -13,10 +13,7 @@ export async function validateToken(token: string) {
 		headers: {
 			'content-type': 'application/json'
 		},
-		body: JSON.stringify({
-			response: token,
-			secret: TURNSTILE_SECRET_KEY
-		})
+		body: `{"response":"${token}","secret":"${TURNSTILE_SECRET_KEY}"}` 
 	});
 	return {
 		success: response.status === 200,
