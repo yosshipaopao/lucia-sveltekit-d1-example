@@ -4,7 +4,7 @@ export const users = sqliteTable('user', {
 	id: text('id').primaryKey(),
 	username: text('username').notNull().unique(),
 	email: text('email').notNull().unique(),
-	emailVerified: integer('emailVerified', { mode: 'boolean' }).default(false)
+	emailVerified: integer('emailVerified', { mode: 'boolean' }).notNull().default(false)
 });
 
 export const session = sqliteTable('user_session', {

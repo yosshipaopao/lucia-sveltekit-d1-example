@@ -37,7 +37,10 @@ export const actions: Actions = {
 					message: 'User does not exist'
 				});
 			}
-			const user = locals.lucia.transformDatabaseUser(storedUser);
+			const user = locals.lucia.transformDatabaseUser({
+				...storedUser,
+				emailVerified: Number(storedUser.emailVerified)
+			});
 			const token = await generatePasswordResetToken(user.userId, locals.DB);
 			await sendPasswordResetLink(email, token);
 			return {

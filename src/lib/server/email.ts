@@ -63,7 +63,7 @@ export const sendEmail = async (email: string, subject: string, body: string) =>
 	};
 	const fromEmailAddress: EmailAddress = {
 		email: SENDER_EMAIL,
-		name: 'VPVDist Verifier'
+		name: 'Email Verifier'
 	};
 	const personalization: Personalization = {
 		to: [toEmailAddress],
@@ -91,7 +91,7 @@ export const sendEmail = async (email: string, subject: string, body: string) =>
 	});
 	if (response.status === 202) return { success: true };
 	try {
-		const { errors } = await response.clone().json();
+		const { errors } = (await response.clone().json()) satisfies { errors: any };
 		return { success: false, errors };
 	} catch {
 		return { success: false, errors: [response.statusText] };

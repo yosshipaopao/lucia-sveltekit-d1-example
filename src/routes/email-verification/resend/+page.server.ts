@@ -4,7 +4,6 @@ import { sendEmailVerificationLink } from '$lib/server/email';
 
 import type { PageServerLoad, Actions } from './$types';
 import { validateToken } from '$lib/server/turnstile';
-import { HOST } from '$env/static/private';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth.validate();

@@ -1,6 +1,6 @@
-import { redirect, fail } from '@sveltejs/kit';
+import { redirect } from '@sveltejs/kit';
 
-import type { PageServerLoad, Actions } from './$types';
+import type { PageServerLoad } from './$types';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth.validate();
@@ -9,4 +9,3 @@ export const load: PageServerLoad = async ({ locals }) => {
 	}
 	return {};
 };
-
