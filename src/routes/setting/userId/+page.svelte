@@ -1,4 +1,4 @@
-<script lang='ts'>
+<script lang="ts">
 	import { enhance } from '$app/forms';
 
 	import type { ActionData, PageData } from './$types';
@@ -18,14 +18,14 @@
 {#if form?.success}
 	<p>Success! Your userId has been changed.</p>
 {:else}
-	<form method='post' use:enhance>
-		<label for='userId'>userId</label>
-		<input name='userId' id='userId' value={data.userId} /><br />
+	<form method="post" use:enhance>
+		<label for="userId">userId</label>
+		<input name="userId" id="userId" value={data.userId} /><br />
 		<Turnstile siteKey={PUBLIC_TURNSTILE_SITE_KEY} bind:reset />
-		<input type='submit' />
+		<input type="submit" />
 	</form>
 	{#if form?.message}
-		<p class='error'>{form.message}</p>
+		<p class="error">{form.message}</p>
 	{/if}
-	<a href='/login'>Sign in</a>
+	<a href="/login">Sign in</a>
 {/if}

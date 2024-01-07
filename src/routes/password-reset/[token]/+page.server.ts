@@ -7,7 +7,7 @@ export const load: PageServerLoad = async ({ params, locals }) => {
 	const { token } = params;
 	const validToken = await isValidPasswordResetToken(token, locals.DB);
 	if (!validToken) {
-		throw redirect(302, '/password-reset');
+		redirect(302, '/password-reset');
 	}
 	return {};
 };
@@ -43,6 +43,6 @@ export const actions: Actions = {
 				message: 'Invalid or expired password reset link'
 			});
 		}
-		throw redirect(302, '/');
+		redirect(302, '/');
 	}
 };

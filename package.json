@@ -25,20 +25,22 @@
 		"svelte-turnstile": "^0.5.0"
 	},
 	"devDependencies": {
-		"@sveltejs/adapter-cloudflare": "^2.3.3",
-		"@sveltejs/kit": "^1.26.0",
+		"@sveltejs/adapter-cloudflare": "^3.0.1",
+		"@sveltejs/kit": "^2.0.6",
+		"@sveltejs/vite-plugin-svelte": "^3.0.1",
 		"@typescript-eslint/eslint-plugin": "^5.62.0",
 		"@typescript-eslint/parser": "^5.62.0",
-		"eslint": "^8.51.0",
+		"eslint": "^8.56.0",
 		"eslint-config-prettier": "^8.10.0",
-		"eslint-plugin-svelte": "^2.34.0",
+		"eslint-plugin-svelte": "^2.35.1",
 		"prettier": "^2.8.8",
 		"prettier-plugin-svelte": "^2.10.1",
-		"svelte": "^4.2.2",
-		"svelte-check": "^3.5.2",
+		"svelte": "^4.2.8",
+		"svelte-check": "^3.6.2",
 		"tslib": "^2.6.2",
-		"typescript": "^5.2.2",
-		"vite": "^4.5.0"
+		"typescript": "^5.3.3",
+		"vite": "^5.0.11",
+		"wrangler": "^3.22.3"
 	},
 	"type": "module"
 }

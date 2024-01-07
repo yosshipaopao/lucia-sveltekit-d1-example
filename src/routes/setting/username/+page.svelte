@@ -3,8 +3,7 @@
 
 	import type { ActionData, PageData } from './$types';
 	export let form: ActionData;
-	export let data:PageData;
-
+	export let data: PageData;
 </script>
 
 <h1>Change username</h1>

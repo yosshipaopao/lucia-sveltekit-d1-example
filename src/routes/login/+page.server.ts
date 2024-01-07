@@ -10,7 +10,7 @@ import { validateToken } from '$lib/server/turnstile';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth.validate();
-	if (session) throw redirect(302, '/');
+	if (session) redirect(302, '/');
 	return {};
 };
 
@@ -78,6 +78,6 @@ export const actions: Actions = {
 				message: 'An unknown error occurred'
 			});
 		}
-		throw redirect(302, '/');
+		redirect(302, '/');
 	}
 };

@@ -8,9 +8,9 @@ import { HOST } from '$env/static/private';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth.validate();
-	if (!session) throw redirect(302, '/login');
+	if (!session) return redirect(302, '/login');
 	if (session.user.emailVerified) {
-		throw redirect(302, '/');
+		redirect(302, '/');
 	}
 	return {};
 };
@@ -18,9 +18,9 @@ export const load: PageServerLoad = async ({ locals }) => {
 export const actions: Actions = {
 	default: async ({ locals, request }) => {
 		const session = await locals.auth.validate();
-		if (!session) throw redirect(302, '/login');
+		if (!session) return redirect(302, '/login');
 		if (session.user.emailVerified) {
-			throw redirect(302, '/');
+			redirect(302, '/');
 		}
 		const formData = await request.formData();
 		// check turnstile
@@ -38,7 +38,6 @@ export const actions: Actions = {
 			const token = await generateEmailVerificationToken(session.user.userId, locals.DB);
 			const { success, errors } = await sendEmailVerificationLink(session.user.email, token);
 			if (!success) {
-				console.log(session.user.email, `${HOST}/email-verification/${token}`)
 				return fail(500, {
 					message: errors
 				});

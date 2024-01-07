@@ -8,6 +8,6 @@
 
 <h1>Profile</h1>
 <p>{data.username}@{data.userId}</p>
-	<form method="post" action="?/logout" use:enhance>
+<form method="post" action="?/logout" use:enhance>
 	<input type="submit" value="Sign out" />
 </form>

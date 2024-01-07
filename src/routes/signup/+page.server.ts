@@ -7,7 +7,7 @@ import { validateToken } from '$lib/server/turnstile';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	const session = await locals.auth.validate();
-	if (session) throw redirect(302, '/');
+	if (session) redirect(302, '/');
 	return {};
 };
 
@@ -52,7 +52,6 @@ export const actions: Actions = {
 					emailVerified: Number(false)
 				}
 			});
-			console.log(email.toLowerCase(),user.userId);
 			const session = await locals.lucia.createSession({
 				userId: user.userId,
 				attributes: {}
@@ -67,7 +66,6 @@ export const actions: Actions = {
 			});
 		}
 		// redirect to
-		// make sure you don't throw inside a try/catch block!
-		throw redirect(302, '/email-verification');
+		return redirect(302, '/email-verification');
 	}
 };
