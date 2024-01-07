@@ -12,5 +12,3 @@ vite.config.ts.timestamp-*
 .idea
 .wrangler
 drizzle
-
-wrangler.toml
