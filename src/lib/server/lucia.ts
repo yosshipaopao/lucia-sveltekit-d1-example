@@ -2,6 +2,7 @@ import { lucia } from 'lucia';
 import { sveltekit } from 'lucia/middleware';
 import { d1 } from '@lucia-auth/adapter-sqlite';
 import { dev } from '$app/environment';
+import { generate, validate } from '$lib/server/hash';
 
 export const initializeLucia = (db: D1Database) => {
 	return lucia({
@@ -14,6 +15,10 @@ export const initializeLucia = (db: D1Database) => {
 				email: data.email,
 				emailVerified: Boolean(data.emailVerified)
 			};
+		},
+		passwordHash:{
+			generate,
+			validate
 		}
 	});
 };
