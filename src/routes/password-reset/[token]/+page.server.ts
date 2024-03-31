@@ -3,9 +3,9 @@ import { validatePasswordResetToken } from '$lib/server/token';
 
 import type { PageServerLoad, Actions } from './$types';
 import { isValidString } from '$lib/utils/string';
-import { Argon2id } from 'oslo/password';
 import { users } from '$lib/schema';
 import { eq } from 'drizzle-orm';
+import { generate } from '$lib/server/hash';
 
 export const load: PageServerLoad = async ({ params, locals }) => {
 	try {
@@ -28,7 +28,7 @@ export const actions: Actions = {
 			});
 		}
 		const userId = await validatePasswordResetToken(params.token, locals.DB);
-		const hashedPassword = await new Argon2id().hash(password);
+		const hashedPassword = await generate(password);
 		await locals.DB.update(users)
 			.set({ password: hashedPassword })
 			.where(eq(users.id, userId))

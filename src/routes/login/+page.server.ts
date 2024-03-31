@@ -7,7 +7,7 @@ import { eq } from 'drizzle-orm';
 
 import { validateTurnstileToken } from '$lib/server/turnstile';
 import { isValidString } from '$lib/utils/string';
-import { Argon2id } from 'oslo/password';
+import { validate } from '$lib/server/hash';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.user) redirect(302, '/');
@@ -75,7 +75,7 @@ export const actions: Actions = {
 				message: 'Incorrect username or password'
 			});
 		}
-		const validPassword = await new Argon2id().verify(existingUser.password, password);
+		const validPassword =await validate(existingUser.password, password);
 		if (!validPassword) {
 			return fail(400, {
 				message: 'Incorrect username or password'

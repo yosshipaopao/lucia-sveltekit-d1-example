@@ -1,24 +1,19 @@
 import type { Handle } from '@sveltejs/kit';
 import { initializeLucia } from '$lib/server/lucia';
+import { drizzle } from 'drizzle-orm/d1';
 //import { getBindings } from 'cfw-bindings-wrangler-bridge';
 //import { unstable_dev } from 'wrangler';
 //import { dev } from '$app/environment';
-import { drizzle } from 'drizzle-orm/d1';
-//import type { UnstableDevWorker } from 'wrangler';
 
-//let worker: UnstableDevWorker;
-//let env: App.Platform['env'];
 export const handle: Handle = async ({ event, resolve }) => {
 	/*
 	if (dev) {
-		if (!env) {
-			worker = await unstable_dev('./node_modules/cfw-bindings-wrangler-bridge/worker/index.js', {
-				experimental: { disableExperimentalWarning: true }
-			});
-			env = await getBindings({
-				bridgeWorkerOrigin: `http://${worker.address}:${worker.port}`
-			});
-		}
+		const worker = await unstable_dev('./node_modules/cfw-bindings-wrangler-bridge/worker/index.js', {
+			experimental: { disableExperimentalWarning: true }
+		});
+		const env :App.Platform['env'] = await getBindings({
+			bridgeWorkerOrigin: `http://${worker.address}:${worker.port}`
+		});
 		event.platform = { env };
 	}*/
 	event.locals.db = <D1Database>event.platform?.env.DB;

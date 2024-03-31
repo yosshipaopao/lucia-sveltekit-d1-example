@@ -5,9 +5,9 @@ import { isValidEmail, sendEmailVerificationLink } from '$lib/server/email';
 import { generateEmailVerificationToken } from '$lib/server/token';
 import { validateTurnstileToken } from '$lib/server/turnstile';
 import { isValidString } from '$lib/utils/string';
-import { Argon2id } from 'oslo/password';
 import { generateId } from 'lucia';
 import { users } from '$lib/schema';
+import { generate } from '$lib/server/hash';
 
 export const load: PageServerLoad = async ({ locals }) => {
 	if (locals.user) redirect(302, '/');
@@ -44,7 +44,7 @@ export const actions: Actions = {
 			});
 		}
 		try {
-			const hashedPassword = await new Argon2id().hash(password);
+			const hashedPassword = await generate(password);
 			const userId = generateId(15);
 			await locals.DB.insert(users).values({
 				id: userId,
