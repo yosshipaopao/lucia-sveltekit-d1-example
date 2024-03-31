@@ -7,7 +7,7 @@ export interface TokenValidateResponse {
 	cdata: string;
 }
 
-export async function validateToken(token: string) {
+export async function validateTurnstileToken(token: string) {
 	const response = await fetch('https://challenges.cloudflare.com/turnstile/v0/siteverify', {
 		method: 'POST',
 		headers: {

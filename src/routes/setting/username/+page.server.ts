@@ -2,30 +2,34 @@ import type { PageServerLoad, Actions } from './$types';
 import { fail, redirect } from '@sveltejs/kit';
 import { users } from '$lib/schema';
 import { eq } from 'drizzle-orm';
+import { isValidString } from '$lib/utils/string';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	const session = await locals.auth.validate();
-	if (!session) return redirect(302, '/login');
-	if (!session.user.emailVerified) return redirect(302, '/email-verification');
+	if (!locals.user) return redirect(302, '/login');
+	if (!locals.user.emailVerified) return redirect(302, '/email-verification');
 	return {
-		userId: session.user.userId,
-		username: session.user.username
+		userId: locals.user.id,
+		username: locals.user.username
 	};
 };
 
 export const actions: Actions = {
 	default: async ({ locals, request }) => {
-		const session = await locals.auth.validate();
-		if (!session) return redirect(302, '/login');
-		if (!session.user.emailVerified) return redirect(302, '/email-verification');
+		if (!locals.user) return redirect(302, '/login');
+		if (!locals.user.emailVerified) return redirect(302, '/email-verification');
 		const formData = await request.formData();
 		const username = formData.get('username');
-		if (typeof username !== 'string' || username.length < 1 || username.length > 31)
-			return fail(400, { message: 'Invalid username' });
+		if (!isValidString(username, 1, 100)) {
+			return fail(400, {
+				message: 'Invalid username'
+			});
+		}
 		try {
-			await locals.DB.update(users).set({ username }).where(eq(users.id, session.user.userId));
+			await locals.DB.update(users).set({ username }).where(eq(users.id, locals.user.id));
 		} catch (e: any) {
-			return fail(400, { message: e?.message ?? 'An unknown error occurred' });
+			return fail(400, {
+				message: e?.message ?? 'An unknown error occurred'
+			});
 		}
 		return {
 			success: true

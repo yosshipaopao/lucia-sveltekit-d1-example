@@ -21,7 +21,6 @@
 	<form method="post" use:enhance>
 		<label for="userId">userId</label>
 		<input name="userId" id="userId" value={data.userId} /><br />
-		<Turnstile siteKey={PUBLIC_TURNSTILE_SITE_KEY} bind:reset />
 		<input type="submit" />
 	</form>
 	{#if form?.message}

@@ -3,22 +3,25 @@ import { fail, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 import { isValidEmail, sendEmailVerificationLink } from '$lib/server/email';
 import { generateEmailVerificationToken } from '$lib/server/token';
-import { validateToken } from '$lib/server/turnstile';
+import { validateTurnstileToken } from '$lib/server/turnstile';
+import { isValidString } from '$lib/utils/string';
+import { Argon2id } from 'oslo/password';
+import { generateId } from 'lucia';
+import { users } from '$lib/schema';
 
 export const load: PageServerLoad = async ({ locals }) => {
-	const session = await locals.auth.validate();
-	if (session) redirect(302, '/');
+	if (locals.user) redirect(302, '/');
 	return {};
 };
 
 export const actions: Actions = {
-	default: async ({ request, locals }) => {
+	default: async ({ request, locals, cookies }) => {
 		const formData = await request.formData();
 		const email = formData.get('email');
 		const password = formData.get('password');
-		const token = formData.get('cf-turnstile-response');
+		const turnstileToken = formData.get('cf-turnstile-response');
 		// basic check
-		if (typeof password !== 'string' || password.length < 6 || password.length > 255) {
+		if (!isValidString(password, 6, 255)) {
 			return fail(400, {
 				message: 'Invalid password'
 			});
@@ -29,37 +32,45 @@ export const actions: Actions = {
 			});
 		}
 		// check turnstile
-		if (typeof token !== 'string')
+		if (!isValidString(turnstileToken)) {
 			return fail(400, {
 				message: 'Invalid turnstile token'
 			});
-		const { success, error } = await validateToken(token);
-		if (!success)
+		}
+		const { success, error } = await validateTurnstileToken(turnstileToken);
+		if (!success) {
 			return fail(400, {
 				message: error || 'Invalid turnstile token'
 			});
+		}
 		try {
-			const user = await locals.lucia.createUser({
-				key: {
-					providerId: 'email', // auth method
-					providerUserId: email.toLowerCase(),
-					password // will be hashed by Lucia
-				},
-				attributes: {
-					username: `user-${Math.floor(Math.random() * 1000000)}`,
-					email,
-					emailVerified: 0
-				}
+			const hashedPassword = await new Argon2id().hash(password);
+			const userId = generateId(15);
+			await locals.DB.insert(users).values({
+				id: userId,
+				username: `user-${Math.floor(Math.random() * 1000000)}`,
+				email,
+				password: hashedPassword
 			});
-			const token = await generateEmailVerificationToken(user.userId, locals.DB);
+			// create session
+			const session = await locals.lucia.createSession(userId, {});
+			const sessionCookie = locals.lucia.createSessionCookie(session.id);
+			cookies.set(sessionCookie.name, sessionCookie.value, {
+				path: '.',
+				...sessionCookie.attributes
+			});
+			// send email verification link
+			const token = await generateEmailVerificationToken(userId, locals.DB);
 			await sendEmailVerificationLink(email, token);
-		} catch (e: any) {
+			// for dev
+			return fail(400, { message: `token is ${token}` });
+		} catch (e) {
 			console.error(e);
 			return fail(500, {
-				message: e.message ?? 'An unknown error occurred'
+				message: 'An unknown error occurred'
 			});
 		}
 		// redirect to
-		return redirect(302, '/email-verification');
+		// redirect(302, '/email-verification');
 	}
 };

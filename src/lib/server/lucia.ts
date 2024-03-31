@@ -1,25 +1,31 @@
-import { lucia } from 'lucia';
-import { sveltekit } from 'lucia/middleware';
-import { d1 } from '@lucia-auth/adapter-sqlite';
+import { Lucia } from 'lucia';
+import { DrizzleSQLiteAdapter } from '@lucia-auth/adapter-drizzle';
 import { dev } from '$app/environment';
-import { generate, validate } from '$lib/server/hash';
+import type { DrizzleD1Database } from 'drizzle-orm/d1';
+import { sessions, users } from '$lib/schema';
 
-export const initializeLucia = (db: D1Database) => {
-	return lucia({
-		middleware: sveltekit(),
-		env: dev ? 'DEV' : 'PROD',
-		adapter: d1(db, { user: 'user', session: 'user_session', key: 'user_key' }),
-		getUserAttributes: (data) => {
-			return {
-				username: data.username,
-				email: data.email,
-				emailVerified: Boolean(data.emailVerified)
-			};
+export const initializeLucia = (db: DrizzleD1Database) => {
+	const adapter = new DrizzleSQLiteAdapter(db, sessions, users);
+	return new Lucia(adapter, {
+		sessionCookie: {
+			attributes: {
+				secure: !dev
+			}
 		},
-		passwordHash:{
-			generate,
-			validate
+		getUserAttributes: (attributes) => {
+			return {
+				username: attributes.username,
+				email: attributes.email,
+				emailVerified: attributes.emailVerified
+			};
 		}
 	});
 };
 export type Auth = ReturnType<typeof initializeLucia>;
+
+declare module 'lucia' {
+	interface Register {
+		Lucia: ReturnType<typeof initializeLucia>;
+		DatabaseUserAttributes: Omit<typeof users.$inferSelect, 'id'>;
+	}
+}

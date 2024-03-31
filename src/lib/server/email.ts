@@ -1,4 +1,5 @@
 import { HOST, DKIMPrivateKey, SENDER_EMAIL, DKIM_DOMAIN } from '$env/static/private';
+import { isValidString } from '$lib/utils/string';
 
 export const sendEmailVerificationLink = async (email: string, token: string) => {
 	const url = `${HOST}/email-verification/${token}`;
@@ -18,11 +19,10 @@ export const sendPasswordResetLink = async (email: string, token: string) => {
 	);
 };
 
-export const isValidEmail = (maybeEmail: unknown): maybeEmail is string => {
-	if (typeof maybeEmail !== 'string') return false;
-	if (maybeEmail.length > 255) return false;
+export const isValidEmail = (value: unknown): value is string => {
+	if (!isValidString(value, -1, 255)) return false;
 	const emailRegexp = /^.+@.+$/; // [one or more character]@[one or more character]
-	return emailRegexp.test(maybeEmail);
+	return emailRegexp.test(value);
 };
 
 interface EmailAddress {

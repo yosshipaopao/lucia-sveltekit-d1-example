@@ -12,6 +12,9 @@
 	<input name="password" id="password" /><br />
 	<input type="submit" />
 </form>
+{#if form?.success}
+	<p>Password changed. Please login via <a href="/login">/login</a></p>
+{/if}
 {#if form?.message}
 	<p class="error">{form.message}</p>
 {/if}

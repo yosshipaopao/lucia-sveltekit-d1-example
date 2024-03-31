@@ -16,12 +16,6 @@ pnpm miragete drizzle\0000_furry_wendell_vaughn.sql
 
 ### run dev
 
-Do both of the following at the same time
-
-```bash
-pnpm cdev
-```
-
 ```bash
 pnpm dev
 ```

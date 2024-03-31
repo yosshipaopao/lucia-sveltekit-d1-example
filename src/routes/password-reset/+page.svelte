@@ -17,9 +17,8 @@
 <form method="post" use:enhance>
 	<label for="email">Email</label>
 	<input name="email" id="email" /><br />
-	<input type="submit" />
-
 	<Turnstile siteKey={PUBLIC_TURNSTILE_SITE_KEY} bind:reset />
+	<input type="submit" value="submit" />
 </form>
 {#if form?.message}
 	<p class="error">{form.message}</p>

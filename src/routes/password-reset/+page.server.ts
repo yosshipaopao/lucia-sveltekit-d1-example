@@ -5,7 +5,8 @@ import { isValidEmail, sendPasswordResetLink } from '$lib/server/email';
 import type { Actions } from './$types';
 import { users } from '$lib/schema';
 import { eq } from 'drizzle-orm';
-import { validateToken } from '$lib/server/turnstile';
+import { validateTurnstileToken } from '$lib/server/turnstile';
+import { isValidString } from '$lib/utils/string';
 
 export const actions: Actions = {
 	default: async ({ request, locals }) => {
@@ -17,39 +18,32 @@ export const actions: Actions = {
 				message: 'Invalid email'
 			});
 		}
-
 		// check turnstile
-		const token = formData.get('cf-turnstile-response');
-		if (typeof token !== 'string')
+		const turnstileToken = formData.get('cf-turnstile-response');
+		if (!isValidString(turnstileToken)) {
 			return fail(400, {
 				message: 'Invalid turnstile token'
 			});
-		const { success, error } = await validateToken(token);
-		if (!success)
+		}
+		const { success, error } = await validateTurnstileToken(turnstileToken);
+		if (!success) {
 			return fail(400, {
 				message: error || 'Invalid turnstile token'
 			});
-
-		try {
-			const storedUser = await locals.DB.select().from(users).where(eq(users.email, email)).get();
-			if (!storedUser) {
-				return fail(400, {
-					message: 'User does not exist'
-				});
-			}
-			const user = locals.lucia.transformDatabaseUser({
-				...storedUser,
-				emailVerified: Number(storedUser.emailVerified)
-			});
-			const token = await generatePasswordResetToken(user.userId, locals.DB);
-			await sendPasswordResetLink(email, token);
-			return {
-				success: true
-			};
-		} catch (e) {
-			return fail(500, {
-				message: 'An unknown error occurred'
+		}
+		const storedUser = await locals.DB.select()
+			.from(users)
+			.where(eq(users.email, email.toLocaleLowerCase()))
+			.get();
+		if (!storedUser) {
+			return fail(400, {
+				message: 'User does not exist'
 			});
 		}
+		const token = await generatePasswordResetToken(storedUser.id, locals.DB);
+		await sendPasswordResetLink(email, token);
+		return {
+			success: true
+		};
 	}
 };

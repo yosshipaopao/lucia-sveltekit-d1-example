@@ -25,4 +25,5 @@
 {#if form?.message}
 	<p class="error">{form.message}</p>
 {/if}
+<a href="/email-verification">Email Verification</a>
 <a href="/login">Sign in</a>
