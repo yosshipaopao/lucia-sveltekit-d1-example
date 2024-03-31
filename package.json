@@ -18,6 +18,7 @@
 	"type": "module",
 	"dependencies": {
 		"drizzle-orm": "^0.30.6",
+		"oslo": "^1.2.0",
 		"svelte-turnstile": "^0.5.0"
 	},
 	"devDependencies": {

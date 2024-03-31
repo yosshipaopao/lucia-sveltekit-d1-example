@@ -8,6 +8,9 @@ dependencies:
   drizzle-orm:
     specifier: ^0.30.6
     version: 0.30.6
+  oslo:
+    specifier: ^1.2.0
+    version: 1.2.0
   svelte-turnstile:
     specifier: ^0.5.0
     version: 0.5.0(svelte@4.2.12)
@@ -55,9 +58,6 @@ devDependencies:
   lucia:
     specifier: ^3.1.1
     version: 3.1.1
-  oslo:
-    specifier: ^1.2.0
-    version: 1.2.0
   prettier:
     specifier: ^3.2.5
     version: 3.2.5
@@ -167,7 +167,7 @@ packages:
     requiresBuild: true
     dependencies:
       tslib: 2.6.2
-    dev: true
+    dev: false
     optional: true
 
   /@emnapi/core@1.1.1:
@@ -183,7 +183,7 @@ packages:
     requiresBuild: true
     dependencies:
       tslib: 2.6.2
-    dev: true
+    dev: false
     optional: true
 
   /@emnapi/runtime@1.1.1:
@@ -1154,7 +1154,7 @@ packages:
     cpu: [arm]
     os: [android]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/argon2-android-arm-eabi@1.7.2:
@@ -1172,7 +1172,7 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/argon2-android-arm64@1.7.2:
@@ -1190,7 +1190,7 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/argon2-darwin-arm64@1.7.2:
@@ -1208,7 +1208,7 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/argon2-darwin-x64@1.7.2:
@@ -1226,7 +1226,7 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/argon2-freebsd-x64@1.7.2:
@@ -1244,7 +1244,7 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/argon2-linux-arm-gnueabihf@1.7.2:
@@ -1262,7 +1262,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/argon2-linux-arm64-gnu@1.7.2:
@@ -1280,7 +1280,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/argon2-linux-arm64-musl@1.7.2:
@@ -1298,7 +1298,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/argon2-linux-x64-gnu@1.7.2:
@@ -1316,7 +1316,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/argon2-linux-x64-musl@1.7.2:
@@ -1338,7 +1338,7 @@ packages:
       '@emnapi/runtime': 0.45.0
       '@tybys/wasm-util': 0.8.1
       memfs-browser: 3.5.10302
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/argon2-wasm32-wasi@1.7.2:
@@ -1357,7 +1357,7 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/argon2-win32-arm64-msvc@1.7.2:
@@ -1375,7 +1375,7 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/argon2-win32-ia32-msvc@1.7.2:
@@ -1393,7 +1393,7 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/argon2-win32-x64-msvc@1.7.2:
@@ -1423,7 +1423,7 @@ packages:
       '@node-rs/argon2-win32-arm64-msvc': 1.7.0
       '@node-rs/argon2-win32-ia32-msvc': 1.7.0
       '@node-rs/argon2-win32-x64-msvc': 1.7.0
-    dev: true
+    dev: false
 
   /@node-rs/argon2@1.7.2:
     resolution: {integrity: sha512-+H6pc3M1vIX9YnG59YW7prHhhpv19P8YyxlXHnnFzTimf2q+kKDF7mGWbhvN9STqIY+P70Patn0Q6qb6Ib5/4g==}
@@ -1451,7 +1451,7 @@ packages:
     cpu: [arm]
     os: [android]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/bcrypt-android-arm-eabi@1.9.2:
@@ -1469,7 +1469,7 @@ packages:
     cpu: [arm64]
     os: [android]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/bcrypt-android-arm64@1.9.2:
@@ -1487,7 +1487,7 @@ packages:
     cpu: [arm64]
     os: [darwin]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/bcrypt-darwin-arm64@1.9.2:
@@ -1505,7 +1505,7 @@ packages:
     cpu: [x64]
     os: [darwin]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/bcrypt-darwin-x64@1.9.2:
@@ -1523,7 +1523,7 @@ packages:
     cpu: [x64]
     os: [freebsd]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/bcrypt-freebsd-x64@1.9.2:
@@ -1541,7 +1541,7 @@ packages:
     cpu: [arm]
     os: [linux]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/bcrypt-linux-arm-gnueabihf@1.9.2:
@@ -1559,7 +1559,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/bcrypt-linux-arm64-gnu@1.9.2:
@@ -1577,7 +1577,7 @@ packages:
     cpu: [arm64]
     os: [linux]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/bcrypt-linux-arm64-musl@1.9.2:
@@ -1595,7 +1595,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/bcrypt-linux-x64-gnu@1.9.2:
@@ -1613,7 +1613,7 @@ packages:
     cpu: [x64]
     os: [linux]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/bcrypt-linux-x64-musl@1.9.2:
@@ -1635,7 +1635,7 @@ packages:
       '@emnapi/runtime': 0.45.0
       '@tybys/wasm-util': 0.8.1
       memfs-browser: 3.5.10302
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/bcrypt-wasm32-wasi@1.9.2:
@@ -1654,7 +1654,7 @@ packages:
     cpu: [arm64]
     os: [win32]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/bcrypt-win32-arm64-msvc@1.9.2:
@@ -1672,7 +1672,7 @@ packages:
     cpu: [ia32]
     os: [win32]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/bcrypt-win32-ia32-msvc@1.9.2:
@@ -1690,7 +1690,7 @@ packages:
     cpu: [x64]
     os: [win32]
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /@node-rs/bcrypt-win32-x64-msvc@1.9.2:
@@ -1720,7 +1720,7 @@ packages:
       '@node-rs/bcrypt-win32-arm64-msvc': 1.9.0
       '@node-rs/bcrypt-win32-ia32-msvc': 1.9.0
       '@node-rs/bcrypt-win32-x64-msvc': 1.9.0
-    dev: true
+    dev: false
 
   /@node-rs/bcrypt@1.9.2:
     resolution: {integrity: sha512-FKUo9iCSIti+ldwoOlY1ztyIFhZxEgT7jZ/UCt/9bg1rLmNdbQQD2JKIMImDCqmTWuLPY4ZF4Q5MyOMIfDCd8Q==}
@@ -1977,7 +1977,6 @@ packages:
     requiresBuild: true
     dependencies:
       tslib: 2.6.2
-    dev: true
     optional: true
 
   /@types/cookie@0.6.0:
@@ -3006,7 +3005,7 @@ packages:
   /fs-monkey@1.0.5:
     resolution: {integrity: sha512-8uMbBjrhzW76TYgEV27Y5E//W2f/lTFmx78P2w19FZSxarhI/798APGQyuGCwmkNxgwGRhrLfvWyLBvNtuOmew==}
     requiresBuild: true
-    dev: true
+    dev: false
     optional: true
 
   /fs.realpath@1.0.0:
@@ -3335,7 +3334,7 @@ packages:
     requiresBuild: true
     dependencies:
       memfs: 3.5.3
-    dev: true
+    dev: false
     optional: true
 
   /memfs@3.5.3:
@@ -3344,7 +3343,7 @@ packages:
     requiresBuild: true
     dependencies:
       fs-monkey: 1.0.5
-    dev: true
+    dev: false
     optional: true
 
   /memoizee@0.4.15:
@@ -3518,7 +3517,7 @@ packages:
     dependencies:
       '@node-rs/argon2': 1.7.0
       '@node-rs/bcrypt': 1.9.0
-    dev: true
+    dev: false
 
   /p-limit@3.1.0:
     resolution: {integrity: sha512-TYOanM3wGwNGsZN2cVTYPArw454xnXj5qmWF1bEoAc4+cU/ol7GVh7odevjp1FNHduHc3KZMcFduxU5Xc6uJRQ==}
@@ -4094,7 +4093,6 @@ packages:
 
   /tslib@2.6.2:
     resolution: {integrity: sha512-AEYxH93jGFPn/a2iVAwW87VuUIkR1FVUKB77NwMF7nBTDkDrrT/Hpt/IrCJ0QXhW27jTBDcf5ZY7w6RiqTMw2Q==}
-    dev: true
 
   /turnstile-types@1.2.0:
     resolution: {integrity: sha512-cTtNEtCYpcXeXR5AOD0YR0xZpXk1iZeTOuXT5vAGNowGGdgapC+k6m/lOVSkmDOUopZmPtmu311XeULIro4gUA==}
