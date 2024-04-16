@@ -2,11 +2,11 @@ import { HOST, DKIMPrivateKey, SENDER_EMAIL, DKIM_DOMAIN } from '$env/static/pri
 import { isValidString } from '$lib/utils/string';
 
 export const sendEmailVerificationLink = async (email: string, token: string) => {
-	const url = `${HOST}/email-verification/${token}`;
+	const url = `${HOST}/email-verification`;
 	return await sendEmail(
 		email,
 		'Verify your email',
-		`Click the link below to verify your email:\n${url}`
+		`Your email verification token is:\n${token}\n\nOr click the link below to verify your email:\n${url}`
 	);
 };
 
