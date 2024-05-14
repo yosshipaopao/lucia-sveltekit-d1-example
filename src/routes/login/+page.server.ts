@@ -75,7 +75,7 @@ export const actions: Actions = {
 				message: 'Incorrect username or password'
 			});
 		}
-		const validPassword =await validate(existingUser.password, password);
+		const validPassword = await validate(existingUser.password, password);
 		if (!validPassword) {
 			return fail(400, {
 				message: 'Incorrect username or password'

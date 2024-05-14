@@ -4,14 +4,16 @@ import { drizzle } from 'drizzle-orm/d1';
 import { dev } from '$app/environment';
 
 export const handle: Handle = async ({ event, resolve }) => {
-	
 	if (dev) {
-		const {unstable_dev} = await import("wrangler");
-		const {getBindings} = await import("cfw-bindings-wrangler-bridge");
-		const worker = await unstable_dev('./node_modules/cfw-bindings-wrangler-bridge/worker/index.js', {
-			experimental: { disableExperimentalWarning: true }
-		});
-		const env :App.Platform['env'] = await getBindings({
+		const { unstable_dev } = await import('wrangler');
+		const { getBindings } = await import('cfw-bindings-wrangler-bridge');
+		const worker = await unstable_dev(
+			'./node_modules/cfw-bindings-wrangler-bridge/worker/index.js',
+			{
+				experimental: { disableExperimentalWarning: true }
+			}
+		);
+		const env: App.Platform['env'] = await getBindings({
 			bridgeWorkerOrigin: `http://${worker.address}:${worker.port}`
 		});
 		event.platform = { env };

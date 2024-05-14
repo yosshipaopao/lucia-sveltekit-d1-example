@@ -2,7 +2,7 @@ async function generateSalt() {
 	const randomBytes = new Uint8Array(16); // 16 bytes (128 bits)
 	crypto.getRandomValues(randomBytes);
 	const saltArray = Array.from(randomBytes);
-	const salt = saltArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+	const salt = saltArray.map((byte) => byte.toString(16).padStart(2, '0')).join('');
 	return salt;
 }
 
@@ -21,13 +21,9 @@ async function hashPassword(password: string, salt: string) {
 	const derivedBitsLength = 256;
 	const iterations = 100000;
 
-	const keyMaterial = await crypto.subtle.importKey(
-		'raw',
-		passwordBuffer,
-		algorithm,
-		false,
-		['deriveBits']
-	);
+	const keyMaterial = await crypto.subtle.importKey('raw', passwordBuffer, algorithm, false, [
+		'deriveBits'
+	]);
 
 	const hashBuffer = await crypto.subtle.deriveBits(
 		{
@@ -41,7 +37,7 @@ async function hashPassword(password: string, salt: string) {
 	);
 
 	const hashArray = Array.from(new Uint8Array(hashBuffer));
-	const hashHex = hashArray.map(byte => byte.toString(16).padStart(2, '0')).join('');
+	const hashHex = hashArray.map((byte) => byte.toString(16).padStart(2, '0')).join('');
 
 	return hashHex;
 }
